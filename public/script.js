@@ -1,23 +1,23 @@
-//fucntion to show selected section
-function showSection(sectionID){
-    //initially, select all sections
-    // use querySelectorAll for all sections with class content and homecontent
-    const sections = document.querySelectorAll('.content');
-    const homesection = document.querySelectorAll('.homecontent');
-
-    //hide the resulting content sections using foreach
+function showSection(sectionID) {
+    // Select all sections to hide them 
+    const sections = document.querySelectorAll('.content, .homecontent');
+    
     sections.forEach(section => {
-        section.style.display='none';
+        section.style.display = 'none';
     });
 
-
-    //select the section that would
-    //be displayed when clicked
+    // Show the active section 
     const activeSection = document.getElementById(sectionID);
-    if(activeSection){
-        activeSection.style.display='block';
+    if (activeSection) {
+        activeSection.style.display = 'block';
     }
 }
+
+// Requirement: Clear Fields button functionality [cite: 16]
+document.getElementById('clrbtn').addEventListener('click', function() {
+    const inputs = document.querySelectorAll('.field');
+    inputs.forEach(input => input.value = '');
+});
 
 //for the insertion success
 window.onload = function() {

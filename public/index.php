@@ -8,11 +8,13 @@
 </head>
 <body>
     <nav class="navbar">
-            <img src="../images/northhub.svg" id="logo"></img>
-            <button class="navbarbuttons" onclick="showSection('create')"> Create </button>
-            <button class="navbarbuttons" > Read </button>
-            <button class="navbarbuttons" > Update </button>
-            <button class="navbarbuttons" > Delete </button>
+          <nav class="navbar">
+    <img src="logo.jpg" id="logo" onclick="showSection('home')"> 
+    <button class="navbarbuttons" onclick="showSection('create')"> Create </button>
+    <button class="navbarbuttons" onclick="showSection('read')"> Read </button>
+    <button class="navbarbuttons" onclick="showSection('update')"> Update </button>
+    <button class="navbarbuttons" onclick="showSection('delete')"> Delete </button>
+</nav>
     </nav>
     <section id="home" class="homecontent"> 
         <h1 class="splash">Welcome to Student Management System</h1>
@@ -22,7 +24,7 @@
     <section id="create" class="content">
         <h1 class="contenttitle"> Insert New Student </h1>
 
-    <form action="../includes/insert.php" method="POST">
+    <form action="insert.php" method="POST">
         <label for="surname" class="label">Surname</label>
         <input type="text" name="surname" id="surname" class="field" required><br/>
 
@@ -36,7 +38,7 @@
         <input type="text" name="address" id="address" class="field"><br/>
 
         <label for="contact" class="label">Mobile Number</label>
-        <input type="text" name="contact" id="contact" class="field"><br/>
+        <input type="text" name="contact_number" id="contact" class="field"><br/>
 
         <div id="btncontainer">
             <button type="button" id="clrbtn" class="btns">Clear Fields</button><br/>
@@ -52,10 +54,63 @@
 
 <br/><br/><br/><br/>
 
-    <section id="read" class="content"> View Students </section>
-    <section id="update" class="content"> Update Student Records </section>
-    <section id="delete" class="content"> Remove Student Records </section>
+   <section id="read" class="content" style="display:none;">
+    <h1 class="contenttitle">View Students</h1>
+    <?php
+    require_once 'db.php';
 
+    try {
+        $stmt = $pdo->query("SELECT * FROM students");
+
+        if ($stmt->rowCount() > 0) {
+            echo "<table border='1' cellpadding='10'>";
+            echo "<tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Middle Name</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                  </tr>";
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo "<tr>
+                        <td>{$row['id']}</td>
+                        <td>{$row['name']}</td>
+                        <td>{$row['surname']}</td>
+                        <td>{$row['middlename']}</td>
+                        <td>{$row['address']}</td>
+                        <td>{$row['contact_number']}</td>
+                      </tr>";
+            }
+
+            echo "</table>";
+        } else {
+            echo "<p>No records found.</p>";
+        }
+
+    } catch (PDOException $e) {
+        echo "<p>Error fetching data.</p>";
+    }
+    ?>
+
+</section>
+    <section id="update" class="content" style="display:none;">
+    <h1 class="contenttitle">Update Student</h1>
+    <form action="insert.php" method="POST">
+        <label for="update_id" class="label">Student ID</label>
+        <input type="number" name="id" id="update_id" class="field" required><br/>
+        <button type="submit" class="btns">Update Record</button>
+    </form>
+</section>
+   <section id="delete" class="content" style="display:none;">
+    <h1 class="contenttitle">Delete Student</h1>
+    <form action="delete.php" method="POST">
+        <label for="delete_id" class="label">Student ID</label>
+        <input type="number" name="id" id="delete_id" class="field" required><br/>
+        <button type="submit" class="btns" style="background-color: #ff4d4d; color: white;">Delete Permanent</button>
+    </form>
+</section>
 
 
     <script src="script.js"></script>
